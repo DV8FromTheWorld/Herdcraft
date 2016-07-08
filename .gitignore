@@ -102,7 +102,7 @@ local.properties
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
 ## Directory-based project format
-.idea/workspace.xml
+.idea/
 /*.iml
 
 ## File-based project format
