@@ -12,8 +12,8 @@ import com.HerdCraft.common.Herd;
 import com.HerdCraft.common.HerdCraft;
 
 public class EntityAIHerdTempt extends EntityAIBase {
-	private Class effectiveClass;
-	/** The entity using this AI that is tempted by the player. */
+    private Class effectiveClass;
+    /** The entity using this AI that is tempted by the player. */
     private EntityCreature temptedEntity;
     private double moveSpeed;
     private double lastKnownPosX;
@@ -41,22 +41,22 @@ public class EntityAIHerdTempt extends EntityAIBase {
      */
     private boolean scaredByPlayerMovement;
     private boolean temptedAvoidsWater;
-	private int maxBreed, minBreed; //count
-	private int baseBreed, varBreed;//time
-	private EntityLivingBase seerEntity;	//used to path to our forward seer.
+    private int maxBreed, minBreed; //count
+    private int baseBreed, varBreed;//time
+    private EntityLivingBase seerEntity;    //used to path to our forward seer.
 
     public EntityAIHerdTempt(EntityCreature temptedEntity, double speed, Item breedingFood, boolean scaredByPlayerMovement, int minBreed, int maxBreed, int baseBreed, int varBreed, Class... effective)
     {
-    	if (effective != null && effective.length > 0)	//optional class to treat this as.
+        if (effective != null && effective.length > 0)    //optional class to treat this as.
         {
-        	effectiveClass = effective[0];
+            effectiveClass = effective[0];
         }
         else
         {
-        	effectiveClass = temptedEntity.getClass();
+            effectiveClass = temptedEntity.getClass();
         }
-    	this.minBreed = minBreed;
-    	this.maxBreed = maxBreed;
+        this.minBreed = minBreed;
+        this.maxBreed = maxBreed;
         this.temptedEntity = temptedEntity;
         this.moveSpeed = speed;
         this.breedingFood = breedingFood;
@@ -65,7 +65,7 @@ public class EntityAIHerdTempt extends EntityAIBase {
     }
 
 
-	/**
+    /**
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute()
@@ -77,43 +77,43 @@ public class EntityAIHerdTempt extends EntityAIBase {
         }
         else
         {
-        	Herd ourHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(temptedEntity, effectiveClass, minBreed, maxBreed, baseBreed, varBreed);	//only care if timer is up
+            Herd ourHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(temptedEntity, effectiveClass, minBreed, maxBreed, baseBreed, varBreed);    //only care if timer is up
             this.temptingPlayer = this.temptedEntity.worldObj.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
 
             if (this.temptingPlayer == null)
             {
-            	if (ourHerd.getTempter() == null)
-            	{
-            		return false;
-            	}
-            	else
-            	{
-            		EntityLivingBase seer = ourHerd.getForwardTempterSeer(temptedEntity);
-            		if (seer != null)
-            		{
-            			ItemStack heldStack = ourHerd.getTempter().getCurrentEquippedItem();
-            			if (heldStack != null && heldStack.getItem() == breedingFood)
-            			{
-            				seerEntity = temptedEntity.getNavigator().getPathToEntityLiving(seer) == null?null:seer;
-            				return seerEntity != null;
-            			}
-            		}
-            		return false;
-            	}
+                if (ourHerd.getTempter() == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    EntityLivingBase seer = ourHerd.getForwardTempterSeer(temptedEntity);
+                    if (seer != null)
+                    {
+                        ItemStack heldStack = ourHerd.getTempter().getCurrentEquippedItem();
+                        if (heldStack != null && heldStack.getItem() == breedingFood)
+                        {
+                            seerEntity = temptedEntity.getNavigator().getPathToEntityLiving(seer) == null?null:seer;
+                            return seerEntity != null;
+                        }
+                    }
+                    return false;
+                }
             }
             else
             {
-            	seerEntity = null;
-            	ItemStack var1 = this.temptingPlayer.getCurrentEquippedItem();
-            	if (var1 != null && var1.getItem() == this.breedingFood)
-            	{
-            		ourHerd.setTempter(temptingPlayer);	//We found a nearby player.
-            		return true;
-            	}
-            	else
-            	{
-            		return false;
-            	}
+                seerEntity = null;
+                ItemStack var1 = this.temptingPlayer.getCurrentEquippedItem();
+                if (var1 != null && var1.getItem() == this.breedingFood)
+                {
+                    ourHerd.setTempter(temptingPlayer);    //We found a nearby player.
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
@@ -158,9 +158,9 @@ public class EntityAIHerdTempt extends EntityAIBase {
     {
         if (temptingPlayer != null)
         {
-	    	this.lastKnownPosX = this.temptingPlayer.posX;
-	        this.lastKnownPosY = this.temptingPlayer.posY;
-	        this.lastKnownPosZ = this.temptingPlayer.posZ;
+            this.lastKnownPosX = this.temptingPlayer.posX;
+            this.lastKnownPosY = this.temptingPlayer.posY;
+            this.lastKnownPosZ = this.temptingPlayer.posZ;
         }
         this.temptedAvoidsWater = this.temptedEntity.getNavigator().getAvoidsWater();
         this.temptedEntity.getNavigator().setAvoidsWater(false);
@@ -182,31 +182,31 @@ public class EntityAIHerdTempt extends EntityAIBase {
      */
     public void updateTask()
     {
-    	if (temptingPlayer != null)
-    	{
-	    	this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, 30.0F, (float)this.temptedEntity.getVerticalFaceSpeed());
-	        double distanceToEntity = temptedEntity.getDistanceSqToEntity(this.temptingPlayer); 
-	        if (distanceToEntity < 6.25D)
-	        {
-	            this.temptedEntity.getNavigator().clearPathEntity();
-	        }
-	        else
-	        {
-	            this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.temptingPlayer, this.moveSpeed);
-	        }
-    	}
-    	else
-    	{
-    		this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.seerEntity, 30.0F, (float)this.temptedEntity.getVerticalFaceSpeed());
-    		double distanceToEntity = temptedEntity.getDistanceSqToEntity(this.seerEntity); 
-	        if (distanceToEntity < 6.25D)
-	        {
-	            this.temptedEntity.getNavigator().clearPathEntity();
-	        }
-	        else
-	        {
-	            this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.seerEntity, this.moveSpeed + (float)(Math.sqrt(distanceToEntity) / 250.0));
-	        }
-    	}
+        if (temptingPlayer != null)
+        {
+            this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, 30.0F, (float)this.temptedEntity.getVerticalFaceSpeed());
+            double distanceToEntity = temptedEntity.getDistanceSqToEntity(this.temptingPlayer);
+            if (distanceToEntity < 6.25D)
+            {
+                this.temptedEntity.getNavigator().clearPathEntity();
+            }
+            else
+            {
+                this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.temptingPlayer, this.moveSpeed);
+            }
+        }
+        else
+        {
+            this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.seerEntity, 30.0F, (float)this.temptedEntity.getVerticalFaceSpeed());
+            double distanceToEntity = temptedEntity.getDistanceSqToEntity(this.seerEntity);
+            if (distanceToEntity < 6.25D)
+            {
+                this.temptedEntity.getNavigator().clearPathEntity();
+            }
+            else
+            {
+                this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.seerEntity, this.moveSpeed + (float)(Math.sqrt(distanceToEntity) / 250.0));
+            }
+        }
     }
 }

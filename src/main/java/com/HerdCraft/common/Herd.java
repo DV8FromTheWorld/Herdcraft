@@ -37,7 +37,7 @@ public class Herd
     private int timeSinceBreed = 0;
     private int BREED_BASE_TIME, BREED_VAR_TIME;
 
-    private EntityLivingBase enemy = null;	//used to determine if we need to panic/attack
+    private EntityLivingBase enemy = null;    //used to determine if we need to panic/attack
     private EntityPlayer tempter = null;
     
     public Herd() {}
@@ -57,99 +57,99 @@ public class Herd
      */
     public void tick(int tick)
     {
-    	if(worldObj != null && !worldObj.isRemote)
-    	{
-	    	this.tickCounter = tick;
-	    	timeSinceBreed++;
-	
-	        if (tick % 20 == 0)
-	        {
-	        	//this.updateHerdRadiusAndCenter(); Must do members first to maintain herds after load.
-	        	this.updateMembers();
-	            updateHerdRadiusAndCenter();
-	            checkBreed();
-	        }
+        if(worldObj != null && !worldObj.isRemote)
+        {
+            this.tickCounter = tick;
+            timeSinceBreed++;
+
+            if (tick % 20 == 0)
+            {
+                //this.updateHerdRadiusAndCenter(); Must do members first to maintain herds after load.
+                this.updateMembers();
+                updateHerdRadiusAndCenter();
+                checkBreed();
+            }
         }
     }
 
-	private void checkBreed() {
-		if (minBreed >= 2 && herdMembers.size() >= minBreed && herdMembers.size() <= maxBreed)
+    private void checkBreed() {
+        if (minBreed >= 2 && herdMembers.size() >= minBreed && herdMembers.size() <= maxBreed)
         {
-        	int median = (maxBreed + minBreed) / 2;
-        	int range = (maxBreed - minBreed) / 2;
-        	int size = herdMembers.size();
-        	int offset = median < size ? size - median : median - size;	//aka: |size-median|
-        	if (timeSinceBreed > (BREED_BASE_TIME + (int)(BREED_VAR_TIME * ((double) offset / (double)range))))	//between 2.5 min and 5 depending on distance from median size
-        	{
-        		EntityAnimal first = null;
-        		for(EntityAnimal member: (List<EntityAnimal>)herdMembers)
-        		{
-        			if (member.getGrowingAge() == 0)
-        			{
-        				if (first == null)
-        				{
-        					first = member;
-        				}
-        				else
-        				{
-        					member.func_146082_f(null);//Animal is fed by null
-        					first.func_146082_f(null);//Animal is fed by null
-        					timeSinceBreed = 0;
-        					break;	//only 1 pair at once.
-        				}
-        			}
-        		}
-        	}
+            int median = (maxBreed + minBreed) / 2;
+            int range = (maxBreed - minBreed) / 2;
+            int size = herdMembers.size();
+            int offset = median < size ? size - median : median - size;    //aka: |size-median|
+            if (timeSinceBreed > (BREED_BASE_TIME + (int)(BREED_VAR_TIME * ((double) offset / (double)range))))    //between 2.5 min and 5 depending on distance from median size
+            {
+                EntityAnimal first = null;
+                for(EntityAnimal member: (List<EntityAnimal>)herdMembers)
+                {
+                    if (member.getGrowingAge() == 0)
+                    {
+                        if (first == null)
+                        {
+                            first = member;
+                        }
+                        else
+                        {
+                            member.func_146082_f(null);//Animal is fed by null
+                            first.func_146082_f(null);//Animal is fed by null
+                            timeSinceBreed = 0;
+                            break;    //only 1 pair at once.
+                        }
+                    }
+                }
+            }
         }
         else
         {
-        	timeSinceBreed = 0;
+            timeSinceBreed = 0;
         }
-	}
+    }
 
-	public void updateMembers()
+    public void updateMembers()
     {
-    	//finds all "myClass" in radius.
+        //finds all "myClass" in radius.
         herdMembers = this.worldObj.getEntitiesWithinAABB(myClass, AxisAlignedBB.getBoundingBox((double)(center.posX - herdRadius), (double)(center.posY - 6), (double)(center.posZ - herdRadius), (double)(center.posX + herdRadius), (double)(this.center.posY + 6), (double)(center.posZ + herdRadius)));
         centerHelper.posX = centerHelper.posY = centerHelper.posZ = 0;
         Iterator i = herdMembers.iterator();
         EntityLivingBase curr = null;
         for (; i.hasNext(); curr = (EntityLivingBase)i.next()){
-        	if (curr != null){
-	        	centerHelper.posX += curr.posX;
-	        	centerHelper.posY += curr.posY;
-	        	centerHelper.posZ += curr.posZ;
-        	}
+            if (curr != null){
+                centerHelper.posX += curr.posX;
+                centerHelper.posY += curr.posY;
+                centerHelper.posZ += curr.posZ;
+            }
         }
         if (curr != null){
-        	centerHelper.posX += curr.posX;
-        	centerHelper.posY += curr.posY;
-        	centerHelper.posZ += curr.posZ;
-    	}
+            centerHelper.posX += curr.posX;
+            centerHelper.posY += curr.posY;
+            centerHelper.posZ += curr.posZ;
+        }
     }
     
     protected void addMember(EntityLivingBase curr){
-    	herdMembers.add(curr);
-    	centerHelper.posX += curr.posX;
-    	centerHelper.posY += curr.posY;
-    	centerHelper.posZ += curr.posZ;
-    	updateHerdRadiusAndCenter();
+        herdMembers.add(curr);
+        centerHelper.posX += curr.posX;
+        centerHelper.posY += curr.posY;
+        centerHelper.posZ += curr.posZ;
+        updateHerdRadiusAndCenter();
     }
 
     //Destroy self to bolster other herd.
     public void mergeHerd(Herd otherHerd){
-    	EntityLivingBase curr = null;
-    	if (enemy != null)
-    	{
-    		otherHerd.setEnemy(enemy);
-    	}
-    	for (Iterator i = herdMembers.iterator(); i.hasNext(); curr = (EntityLivingBase)i.next()){
-    		if (curr != null){
-    			otherHerd.addMember(curr);
-    			i.remove();
-    		}
-    	}
-    	herdRadius = 0;
+        EntityLivingBase curr = null;
+        if (enemy != null)
+        {
+            otherHerd.setEnemy(enemy);
+        }
+        for (Iterator i = herdMembers.iterator(); i.hasNext(); curr = (EntityLivingBase)i.next()){
+            if (curr != null){
+                otherHerd.addMember(curr);
+                i.remove();
+            }
+        }
+        herdRadius = 0;
     }
     
     public ChunkCoordinates getCenter()
@@ -164,104 +164,104 @@ public class Herd
     
     public World getWorldObj()
     {
-    	return worldObj;
+        return worldObj;
     }
 
     public EntityLivingBase getEnemy()
     {
-    	return this.enemy;
+        return this.enemy;
     }
     
-	public void setEnemy(EntityLivingBase enemy2) {
-		if (myClass.isInstance(enemy2)) return; //Our herd cannot hate itself.
-		this.enemy = enemy2;
-		if (enemy != null)
-		{
-			fleeIn.xCoord = center.posX - enemy.posX;
-			fleeIn.zCoord = center.posZ - enemy.posZ;
-			fleeIn = fleeIn.normalize();
-		}
-		else
-		{
-			fleeIn.xCoord = 0;
-			fleeIn.zCoord = 0;
-		}
-	}
-	
-	public EntityPlayer getTempter()
+    public void setEnemy(EntityLivingBase enemy2) {
+        if (myClass.isInstance(enemy2)) return; //Our herd cannot hate itself.
+        this.enemy = enemy2;
+        if (enemy != null)
+        {
+            fleeIn.xCoord = center.posX - enemy.posX;
+            fleeIn.zCoord = center.posZ - enemy.posZ;
+            fleeIn = fleeIn.normalize();
+        }
+        else
+        {
+            fleeIn.xCoord = 0;
+            fleeIn.zCoord = 0;
+        }
+    }
+
+    public EntityPlayer getTempter()
     {
-    	return this.tempter;
+        return this.tempter;
     }
     
-	public void setTempter(EntityPlayer aiTarget) {
-		this.tempter = aiTarget;
-	}
+    public void setTempter(EntityPlayer aiTarget) {
+        this.tempter = aiTarget;
+    }
     
-	/*
-	 * Returns an entity does see the herd's target.
-	 */
-	public EntityLivingBase getForwardEnemySeer(EntityLiving source)
-	{
-		if (enemy == null)
-		{
-			return null;
-		}
-		
-		EntityLivingBase curr = null;
-		double currDistSqrd = 0;
-		EntityLivingBase nearest = null;
-		double nearestDistSqrd = Double.MAX_VALUE;
-		Iterator i = herdMembers.iterator();
-		while (i.hasNext())
-		{
-			curr = (EntityLivingBase) i.next();
-			currDistSqrd = curr.getDistanceSqToEntity(enemy); 
-			if (currDistSqrd < nearestDistSqrd && curr != source && curr.getDistanceSqToEntity(source) < 16 * 16) //closest thing not me, that I can see.
-    		{
-    			nearest = curr;
-    			nearestDistSqrd = currDistSqrd;
-    		}
-   		}
+    /*
+     * Returns an entity does see the herd's target.
+     */
+    public EntityLivingBase getForwardEnemySeer(EntityLiving source)
+    {
+        if (enemy == null)
+        {
+            return null;
+        }
 
-		if (nearest != null && nearestDistSqrd < source.getDistanceSqToEntity(enemy))	//if I'm closer, give up.
-		{
-			return nearest;
-		}
-		enemy = null;	//No-one sees it. Forget about it.
-		return null;
-	}
-	
-	public EntityLivingBase getForwardTempterSeer(EntityLiving source)
-	{
-		if (tempter == null)
-		{
-			return null;
-		}
-		
-		EntityLivingBase curr = null;
-		double currDistSqrd = 0;
-		EntityLivingBase nearest = null;
-		double nearestDistSqrd = Double.MAX_VALUE;
-		Iterator i = herdMembers.iterator();
-		while (i.hasNext())
-		{
-			curr = (EntityLivingBase) i.next();
-			currDistSqrd = curr.getDistanceSqToEntity(tempter); 
-			if (currDistSqrd < nearestDistSqrd && curr != source && curr.getDistanceSqToEntity(source) < 16 * 16) //closest thing not me, that I can see.
-    		{
-    			nearest = curr;
-    			nearestDistSqrd = currDistSqrd;
-    		}
-   		}
+        EntityLivingBase curr = null;
+        double currDistSqrd = 0;
+        EntityLivingBase nearest = null;
+        double nearestDistSqrd = Double.MAX_VALUE;
+        Iterator i = herdMembers.iterator();
+        while (i.hasNext())
+        {
+            curr = (EntityLivingBase) i.next();
+            currDistSqrd = curr.getDistanceSqToEntity(enemy);
+            if (currDistSqrd < nearestDistSqrd && curr != source && curr.getDistanceSqToEntity(source) < 16 * 16) //closest thing not me, that I can see.
+            {
+                nearest = curr;
+                nearestDistSqrd = currDistSqrd;
+            }
+           }
 
-		if (nearest != null && nearestDistSqrd < source.getDistanceSqToEntity(tempter))	//if I'm closer, give up.
-		{
-			return nearest;
-		}
-		tempter = null;	//No-one sees it. Forget about it.
-		return null;
-	}
-	
+        if (nearest != null && nearestDistSqrd < source.getDistanceSqToEntity(enemy))    //if I'm closer, give up.
+        {
+            return nearest;
+        }
+        enemy = null;    //No-one sees it. Forget about it.
+        return null;
+    }
+
+    public EntityLivingBase getForwardTempterSeer(EntityLiving source)
+    {
+        if (tempter == null)
+        {
+            return null;
+        }
+
+        EntityLivingBase curr = null;
+        double currDistSqrd = 0;
+        EntityLivingBase nearest = null;
+        double nearestDistSqrd = Double.MAX_VALUE;
+        Iterator i = herdMembers.iterator();
+        while (i.hasNext())
+        {
+            curr = (EntityLivingBase) i.next();
+            currDistSqrd = curr.getDistanceSqToEntity(tempter);
+            if (currDistSqrd < nearestDistSqrd && curr != source && curr.getDistanceSqToEntity(source) < 16 * 16) //closest thing not me, that I can see.
+            {
+                nearest = curr;
+                nearestDistSqrd = currDistSqrd;
+            }
+           }
+
+        if (nearest != null && nearestDistSqrd < source.getDistanceSqToEntity(tempter))    //if I'm closer, give up.
+        {
+            return nearest;
+        }
+        tempter = null;    //No-one sees it. Forget about it.
+        return null;
+    }
+
     public int getNumMembers()
     {
         return this.herdMembers.size();
@@ -319,23 +319,23 @@ public class Herd
 
     public void shuntCenter(ChunkCoordinates otherCenter, int otherSize)
     {
-    	int mySize = herdMembers.size();
-    	if (otherSize > mySize)
-    	{
-    		Vec3 direction = Vec3.createVectorHelper(center.posX - otherCenter.posX, center.posY - otherCenter.posY, center.posZ - otherCenter.posZ);
-    		direction.normalize();
-    		int xShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.xCoord);
-    		int yShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.yCoord); 
-    		int zShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.zCoord); 
-    		center.set(center.posX + xShunt, center.posY + yShunt, center.posZ + zShunt);
-    	}
+        int mySize = herdMembers.size();
+        if (otherSize > mySize)
+        {
+            Vec3 direction = Vec3.createVectorHelper(center.posX - otherCenter.posX, center.posY - otherCenter.posY, center.posZ - otherCenter.posZ);
+            direction.normalize();
+            int xShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.xCoord);
+            int yShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.yCoord);
+            int zShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.zCoord);
+            center.set(center.posX + xShunt, center.posY + yShunt, center.posZ + zShunt);
+        }
     }
     
-	public Class getType() {
-		return myClass;
-	}
+    public Class getType() {
+        return myClass;
+    }
 
-	public int getSize() {
-		return herdMembers.size();
-	}
+    public int getSize() {
+        return herdMembers.size();
+    }
 }

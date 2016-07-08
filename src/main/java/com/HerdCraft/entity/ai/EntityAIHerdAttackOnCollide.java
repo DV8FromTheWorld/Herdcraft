@@ -29,7 +29,7 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
     private int navThrottler;
 
     public EntityAIHerdAttackOnCollide(EntityLiving par1EntityLiving, Class par2Class, double moveSpeed,
-    		boolean seesThroughWalls, Class effective)
+            boolean seesThroughWalls, Class effective)
     {
         this(par1EntityLiving, moveSpeed, seesThroughWalls, effective);
         this.classTarget = par2Class;
@@ -37,13 +37,13 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
 
     public EntityAIHerdAttackOnCollide(EntityLiving attacker, double moveSpeed, boolean seesThroughWalls, Class effective)
     {
-    	if (effective != null)	//optional class to treat this as.
+        if (effective != null)    //optional class to treat this as.
         {
-        	attackerEffectiveClass = effective;
+            attackerEffectiveClass = effective;
         }
         else
         {
-        	attackerEffectiveClass = attacker.getClass();
+            attackerEffectiveClass = attacker.getClass();
         }
         this.attackTick = 0;
         this.attacker = attacker;
@@ -53,14 +53,14 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
         this.setMutexBits(3);
     }
 
-	/**
+    /**
      * Returns whether the EntityAIBase should begin execution.
      */
     public boolean shouldExecute()
     {
         EntityLivingBase var1 = this.attacker.getAttackTarget();
         EntityLivingBase var2 = this.attacker.getAITarget();
-        Herd ourHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(attacker, attackerEffectiveClass, 0, 0, 0, 0);	//attackers never breed.
+        Herd ourHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(attacker, attackerEffectiveClass, 0, 0, 0, 0);    //attackers never breed.
 
         if (var1 == null && var2 == null && ourHerd.getEnemy() == null)
         {
@@ -73,18 +73,18 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
 
         if (var1 != null)
         {
-        	ourHerd.setEnemy(var1);
+            ourHerd.setEnemy(var1);
         }
         if (var2 != null)
         {
-        	ourHerd.setEnemy(var2);
+            ourHerd.setEnemy(var2);
         }
         entityTarget = ourHerd.getEnemy();
         this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(this.entityTarget);
         EntityLivingBase seer = ourHerd.getForwardEnemySeer(attacker);
         if (entityPathEntity == null && seer != null)
         {
-        	entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(seer);
+            entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(seer);
         }
         return this.entityPathEntity != null;
     }
@@ -95,14 +95,14 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
     public boolean continueExecuting()
     {
         Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(attacker, attackerEffectiveClass, 0, 0, 0, 0);
-    	EntityLivingBase var1 = this.attacker.getAttackTarget();
+        EntityLivingBase var1 = this.attacker.getAttackTarget();
         if (var1 == null)
         {
-        	var1 = myHerd.getEnemy();
+            var1 = myHerd.getEnemy();
         }
         else
         {
-        	myHerd.setEnemy(var1);
+            myHerd.setEnemy(var1);
         }
         return var1 == null ? false : (!this.entityTarget.isEntityAlive() ? false : !this.attacker.getNavigator().noPath());
     }
@@ -131,9 +131,9 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
      */
     public void updateTask()
     {
-    	Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(attacker, attackerEffectiveClass,0,0,0,0);
-    	
-    	
+        Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(attacker, attackerEffectiveClass,0,0,0,0);
+
+
         this.attacker.getLookHelper().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
 
         if ((this.seesThroughWalls || this.attacker.getEntitySenses().canSee(this.entityTarget)) && --this.navThrottler <= 0)
@@ -141,10 +141,10 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
             this.navThrottler = 4 + this.attacker.getRNG().nextInt(7);
             if (!this.attacker.getNavigator().tryMoveToEntityLiving(this.entityTarget, this.moveSpeed))
             {
-            	EntityLivingBase seer = myHerd.getForwardEnemySeer(attacker);
-            	if (seer != null){
-            		this.attacker.getNavigator().tryMoveToEntityLiving(seer, this.moveSpeed);
-            	}
+                EntityLivingBase seer = myHerd.getForwardEnemySeer(attacker);
+                if (seer != null){
+                    this.attacker.getNavigator().tryMoveToEntityLiving(seer, this.moveSpeed);
+                }
             }
         }
 

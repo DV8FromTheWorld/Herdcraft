@@ -12,16 +12,16 @@ import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
 
 public class ConfigGUIPig extends ConfigGUIGeneric {
 
-	private static String category = "pig";
-	
-	public ConfigGUIPig(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop)
+    private static String category = "pig";
+
+    public ConfigGUIPig(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop)
     {
         super(owningScreen, owningEntryList, prop);
     }
     
-	@Override
-	protected GuiScreen buildChildScreen() {
-		return buildChildScreen(category);
-	}
+    @Override
+    protected GuiScreen buildChildScreen() {
+        return buildChildScreen(category);
+    }
 }
 

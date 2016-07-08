@@ -20,7 +20,7 @@ import net.minecraft.util.Vec3;
 
 public class EntityAIHerdArrowAttack extends EntityAIBase
 {
-	public final IEntitySelector entityFilter = new IEntitySelector()
+    public final IEntitySelector entityFilter = new IEntitySelector()
     {
         private static final String __OBFID = "CL_00001575";
         /**
@@ -31,7 +31,7 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
             return entityHost.getClass().isAssignableFrom(target.getClass()) && target.isEntityAlive() && entityHost.getEntitySenses().canSee(target);
         }
     };
-	
+
     /** The entity the AI instance has been applied to */
     private final EntityLiving entityHost;
     /**
@@ -59,8 +59,8 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
     private boolean clockwise;
     private boolean interuptableByRange;
 
-	private int timeSinceBlockedCheck;
-	private boolean wasBlocked;
+    private int timeSinceBlockedCheck;
+    private boolean wasBlocked;
 
     public EntityAIHerdArrowAttack(IRangedAttackMob host, double moveSpeed, int rangedAttackTime, float attackRange, int cautionAngle, boolean clockwise, boolean interuptableByRange)
     {
@@ -97,7 +97,7 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.entityHost.getAttackTarget();
-        Herd ourHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entityHost, entityHost.getClass(), 0, 0, 0, 0);	//attackers never breed.
+        Herd ourHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entityHost, entityHost.getClass(), 0, 0, 0, 0);    //attackers never breed.
 
         if (entitylivingbase == null && ourHerd.getEnemy() == null)
         {
@@ -105,12 +105,12 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
         }
         else if (entitylivingbase != null)
         {
-        	ourHerd.setEnemy(entitylivingbase);
+            ourHerd.setEnemy(entitylivingbase);
         }
         attackTarget = ourHerd.getEnemy();
         if(interuptableByRange && entityHost.getDistanceToEntity(attackTarget) < 5.0F)
         {
-        	return false;
+            return false;
         }
         return true;
     }
@@ -139,11 +139,11 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
      */
     public void updateTask()
     {
-    	if (attackTarget == null) //Shouldn't happen, but does. 
-    	{
-    		resetTask();
-    		return; 
-    	}
+        if (attackTarget == null) //Shouldn't happen, but does.
+        {
+            resetTask();
+            return;
+        }
         double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
         boolean canSeeTarget = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
@@ -158,27 +158,27 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
         wasBlocked = isBlockedByOther(MathHelper.sqrt_double(d0));
         if (d0 <= (double)this.attackRangeSquared)
         {
-        	
-        	if(wasBlocked)
+
+            if(wasBlocked)
             {
-            	circleTarget();
+                circleTarget();
             }
-        	else if (this.timeTargetSeen >= 20)
-        	{
-        		this.entityHost.getNavigator().clearPathEntity();
-        	}
+            else if (this.timeTargetSeen >= 20)
+            {
+                this.entityHost.getNavigator().clearPathEntity();
+            }
             
         }
         else
         {
-        	if (!this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed))
-        	{
-        		EntityLivingBase seer = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entityHost, entityHost.getClass(), 0, 0, 0, 0).getForwardEnemySeer(entityHost);
-        		if (seer != null)
-        		{
-        			entityHost.getNavigator().tryMoveToEntityLiving(seer, entityMoveSpeed);
-        		}
-        	}
+            if (!this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed))
+            {
+                EntityLivingBase seer = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entityHost, entityHost.getClass(), 0, 0, 0, 0).getForwardEnemySeer(entityHost);
+                if (seer != null)
+                {
+                    entityHost.getNavigator().tryMoveToEntityLiving(seer, entityMoveSpeed);
+                }
+            }
         }
 
         this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
@@ -214,41 +214,41 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
         }
     }
 
-	private void circleTarget() {
-		Vec3 entityPos = Vec3.createVectorHelper(entityHost.posX, entityHost.posY, entityHost.posZ);
-		Vec3 targetPos = Vec3.createVectorHelper(attackTarget.posX, attackTarget.posY, attackTarget.posZ);
-		Vec3 centerPos = targetPos.subtract(entityPos);
-		centerPos.rotateAroundY(clockwise?cautionAngle:-cautionAngle);
-		targetPos = centerPos.addVector(targetPos.xCoord, targetPos.yCoord, targetPos.zCoord);
-		entityPos = RandomPositionGenerator.findRandomTargetBlockTowards((EntityCreature) entityHost, 4, 4, targetPos);
-		if(entityPos != null)
-		{
-			entityHost.getNavigator().tryMoveToXYZ(entityPos.xCoord, entityPos.yCoord, entityPos.zCoord, entityMoveSpeed);
-		}
-	}
+    private void circleTarget() {
+        Vec3 entityPos = Vec3.createVectorHelper(entityHost.posX, entityHost.posY, entityHost.posZ);
+        Vec3 targetPos = Vec3.createVectorHelper(attackTarget.posX, attackTarget.posY, attackTarget.posZ);
+        Vec3 centerPos = targetPos.subtract(entityPos);
+        centerPos.rotateAroundY(clockwise?cautionAngle:-cautionAngle);
+        targetPos = centerPos.addVector(targetPos.xCoord, targetPos.yCoord, targetPos.zCoord);
+        entityPos = RandomPositionGenerator.findRandomTargetBlockTowards((EntityCreature) entityHost, 4, 4, targetPos);
+        if(entityPos != null)
+        {
+            entityHost.getNavigator().tryMoveToXYZ(entityPos.xCoord, entityPos.yCoord, entityPos.zCoord, entityMoveSpeed);
+        }
+    }
 
-	private boolean isBlockedByOther(double distToTarget) {
-		if(cautionAngle == 0) return false;
-		if(--timeSinceBlockedCheck > 0)
-		{
-			return wasBlocked;
-		}
-		timeSinceBlockedCheck = 5;
-		List<EntityLivingBase> list = this.entityHost.worldObj.selectEntitiesWithinAABB(this.entityHost.getClass(), this.entityHost.boundingBox.expand(distToTarget, 3.0D, distToTarget), this.entityFilter);
-		list.remove(entityHost);
-		list.remove(attackTarget);
-		if(list.size() == 0) return false;
-		Vec3 directionToTarget = Vec3.createVectorHelper(entityHost.posX, 0, entityHost.posZ).subtract(Vec3.createVectorHelper(attackTarget.posX, 0, attackTarget.posZ));
-		double angleToTarget = Math.toDegrees(Math.atan2(directionToTarget.xCoord, directionToTarget.zCoord));
-		for(EntityLivingBase other:list)
-		{
-			Vec3 directionToOther = Vec3.createVectorHelper(entityHost.posX, 0, entityHost.posZ).subtract(Vec3.createVectorHelper(other.posX, 0, other.posZ));
-			double angleToOther = Math.toDegrees(Math.atan2(directionToOther.xCoord, directionToOther.zCoord));
-			if (Math.abs(angleToOther - angleToTarget) < cautionAngle) 
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+    private boolean isBlockedByOther(double distToTarget) {
+        if(cautionAngle == 0) return false;
+        if(--timeSinceBlockedCheck > 0)
+        {
+            return wasBlocked;
+        }
+        timeSinceBlockedCheck = 5;
+        List<EntityLivingBase> list = this.entityHost.worldObj.selectEntitiesWithinAABB(this.entityHost.getClass(), this.entityHost.boundingBox.expand(distToTarget, 3.0D, distToTarget), this.entityFilter);
+        list.remove(entityHost);
+        list.remove(attackTarget);
+        if(list.size() == 0) return false;
+        Vec3 directionToTarget = Vec3.createVectorHelper(entityHost.posX, 0, entityHost.posZ).subtract(Vec3.createVectorHelper(attackTarget.posX, 0, attackTarget.posZ));
+        double angleToTarget = Math.toDegrees(Math.atan2(directionToTarget.xCoord, directionToTarget.zCoord));
+        for(EntityLivingBase other:list)
+        {
+            Vec3 directionToOther = Vec3.createVectorHelper(entityHost.posX, 0, entityHost.posZ).subtract(Vec3.createVectorHelper(other.posX, 0, other.posZ));
+            double angleToOther = Math.toDegrees(Math.atan2(directionToOther.xCoord, directionToOther.zCoord));
+            if (Math.abs(angleToOther - angleToTarget) < cautionAngle)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

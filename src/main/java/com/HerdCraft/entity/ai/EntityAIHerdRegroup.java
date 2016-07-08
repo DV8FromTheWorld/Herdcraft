@@ -17,19 +17,19 @@ public class EntityAIHerdRegroup extends EntityAIBase
     private double yPosition;
     private double zPosition;
     private double speed;
-	private int minBreed, maxBreed; // Numbers
-	private int baseBreed, varBreed;//Times
+    private int minBreed, maxBreed; // Numbers
+    private int baseBreed, varBreed;//Times
 
     public EntityAIHerdRegroup(EntityCreature par1EntityCreature, double speed, int minBreed, int maxBreed, int baseBreed, int varBreed, Class... effective)
     {
         this.entity = par1EntityCreature;
-        if (effective != null && effective.length > 0)	//optional class to treat this as.
+        if (effective != null && effective.length > 0)    //optional class to treat this as.
         {
-        	entityEffectiveClass = effective[0];
+            entityEffectiveClass = effective[0];
         }
         else
         {
-        	entityEffectiveClass = entity.getClass();
+            entityEffectiveClass = entity.getClass();
         }
         this.speed = speed;
         this.setMutexBits(1);
@@ -52,16 +52,16 @@ public class EntityAIHerdRegroup extends EntityAIBase
         ChunkCoordinates center = nearHerd.getCenter();
         
         if (center.getDistanceSquared((int)entity.posX, (int)entity.posY, (int)entity.posZ) < (nearHerd.getHerdRadius() / 3) * (nearHerd.getHerdRadius() / 3)){
-        	return false;
+            return false;
         }
         if (this.entity.getRNG().nextInt(20) != 0){
-        	return false;
+            return false;
         }
         
         Vec3 var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 10, 4, Vec3.createVectorHelper(center.posX, center.posY, center.posZ));
         if (var1 == null)
         {
-        	return false;
+            return false;
         }
         xPosition = var1.xCoord;
         yPosition = var1.yCoord;

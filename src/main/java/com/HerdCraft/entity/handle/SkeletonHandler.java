@@ -54,7 +54,7 @@ public class SkeletonHandler extends EntityHandler
     @Override
     public void handleEntity(EntityCreature entity)
     {
-        entity.tasks.addTask(5, new EntityAIHerdRegroup(entity, 1.0D, 0, 0, 0, 0));	//only EntityAnimals may breed.
+        entity.tasks.addTask(5, new EntityAIHerdRegroup(entity, 1.0D, 0, 0, 0, 0));    //only EntityAnimals may breed.
         if (SKELETON_FAN_RANGE > 0)
         {
             entity.tasks.addTask(5, new EntityAIShyFrom(entity, EntitySkeleton.class, SKELETON_FAN_RANGE, 1.0D, 1.2D, 6));

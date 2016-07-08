@@ -17,19 +17,19 @@ public class EntityAIHerdPanic extends EntityAIBase
     private double randPosX;
     private double randPosY;
     private double randPosZ;
-	private int minBreed, maxBreed;//Numbers
-	private int baseBreed, varBreed;//Times
+    private int minBreed, maxBreed;//Numbers
+    private int baseBreed, varBreed;//Times
 
     public EntityAIHerdPanic(EntityCreature entity, double speed, int minBreed, int maxBreed, int baseBreed, int varBreed, Class... effective)
     {
         this.entity = entity;
-        if (effective != null && effective.length > 0)	//optional class to treat this as.
+        if (effective != null && effective.length > 0)    //optional class to treat this as.
         {
-        	entityEffectiveClass = effective[0];
+            entityEffectiveClass = effective[0];
         }
         else
         {
-        	entityEffectiveClass = entity.getClass();
+            entityEffectiveClass = entity.getClass();
         }
         this.speed = speed;
         this.setMutexBits(1);
@@ -44,11 +44,11 @@ public class EntityAIHerdPanic extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-    	Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed); 
-    	if (this.entity.getAITarget() != null)
-    	{
-    		myHerd.setEnemy(entity.getAITarget());
-    	}
+        Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed);
+        if (this.entity.getAITarget() != null)
+        {
+            myHerd.setEnemy(entity.getAITarget());
+        }
         if (myHerd.getEnemy() == null)
         {
             return false;
@@ -86,6 +86,6 @@ public class EntityAIHerdPanic extends EntityAIBase
     
     public void resetTask()
     {
-    	HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed).setEnemy(null);
+        HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed).setEnemy(null);
     }
 }

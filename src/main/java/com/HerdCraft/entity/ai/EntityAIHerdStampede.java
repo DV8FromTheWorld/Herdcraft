@@ -14,20 +14,20 @@ public class EntityAIHerdStampede extends EntityAIBase
     private EntityCreature entity;
     private Class entityEffectiveClass;
     private double speed;
-	private int minBreed, maxBreed;//Numbers
-	private int baseBreed, varBreed;//Times
-	private double fleeX, fleeY, fleeZ;
+    private int minBreed, maxBreed;//Numbers
+    private int baseBreed, varBreed;//Times
+    private double fleeX, fleeY, fleeZ;
 
     public EntityAIHerdStampede(EntityCreature entity, double speed, int minBreed, int maxBreed, int baseBreed, int varBreed, Class... effective)
     {
         this.entity = entity;
-        if (effective != null && effective.length > 0)	//optional class to treat this as.
+        if (effective != null && effective.length > 0)    //optional class to treat this as.
         {
-        	entityEffectiveClass = effective[0];
+            entityEffectiveClass = effective[0];
         }
         else
         {
-        	entityEffectiveClass = entity.getClass();
+            entityEffectiveClass = entity.getClass();
         }
         this.speed = speed;
         this.setMutexBits(1);
@@ -42,11 +42,11 @@ public class EntityAIHerdStampede extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-    	Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed); 
-    	if (this.entity.getAITarget() != null)
-    	{
-    		myHerd.setEnemy(entity.getAITarget());
-    	}
+        Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed);
+        if (this.entity.getAITarget() != null)
+        {
+            myHerd.setEnemy(entity.getAITarget());
+        }
         if (myHerd.getEnemy() == null)
         {
             return false;
@@ -55,7 +55,7 @@ public class EntityAIHerdStampede extends EntityAIBase
         Vec3 var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 15, 4, Vec3.createVectorHelper(entity.posX + myHerd.fleeIn.xCoord * 30.0d, entity.posY, entity.posZ + myHerd.fleeIn.zCoord * 30.0d));
         if (var1 == null)
         {
-        	return false;
+            return false;
         }
         fleeX = var1.xCoord;
         fleeY = var1.yCoord;
@@ -68,7 +68,7 @@ public class EntityAIHerdStampede extends EntityAIBase
      */
     public void startExecuting()
     {
-    	Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed);
+        Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed);
         this.entity.getNavigator().tryMoveToXYZ(fleeX, fleeY, fleeZ, this.speed);
     }
 
@@ -82,7 +82,7 @@ public class EntityAIHerdStampede extends EntityAIBase
     
     public void resetTask()
     {
-    	Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed); 
-    	myHerd.setEnemy(null);
+        Herd myHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed);
+        myHerd.setEnemy(null);
     }
 }

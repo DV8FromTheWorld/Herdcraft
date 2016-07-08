@@ -125,7 +125,7 @@ public class ZombieHandler extends EntityHandler
     @Override
     public void handleEntity(EntityCreature entity)
     {
-        entity.tasks.addTask(5, new EntityAIHerdRegroup(entity, 1.0D, 0, 0, 0, 0,(EXPLICIT_ZOMBIE_HORDING?EntityZombie.class:null)));	//only EntityAnimals may breed.
+        entity.tasks.addTask(5, new EntityAIHerdRegroup(entity, 1.0D, 0, 0, 0, 0,(EXPLICIT_ZOMBIE_HORDING?EntityZombie.class:null)));    //only EntityAnimals may breed.
         entity.tasks.addTask(2, new EntityAIHerdAttackOnCollide(entity, EntityPlayer.class, 1.0D, false,(EXPLICIT_ZOMBIE_HORDING?EntityZombie.class:null)));
         entity.tasks.addTask(3, new EntityAIHerdAttackOnCollide(entity, EntityVillager.class, 1.0D, true,(EXPLICIT_ZOMBIE_HORDING?EntityZombie.class:null)));
 

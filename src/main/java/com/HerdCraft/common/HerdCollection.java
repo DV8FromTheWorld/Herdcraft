@@ -20,17 +20,17 @@ public class HerdCollection
 
     public HerdCollection(boolean magnet, int magnetRadius)
     {
-    	this.magnet = magnet;
-    	this.magnetRadius = magnetRadius;
+        this.magnet = magnet;
+        this.magnetRadius = magnetRadius;
     }
 
     /**
      * Runs a single tick for the herd collection
      */
-	@SubscribeEvent
+    @SubscribeEvent
     public void tick(TickEvent tock)
     {
-		if(!tock.side.isServer())return;
+        if(!tock.side.isServer())return;
         ++this.tickCounter;
         Iterator i = this.herdList.iterator();
 
@@ -40,17 +40,17 @@ public class HerdCollection
             curr.tick(this.tickCounter);
             if (magnet && tickCounter % 400 == 0)
             {
-            	Herd other = findNearestHerd(curr, magnetRadius);
-            	if (other != null)
-            	{
-            		curr.shuntCenter(other.getCenter(), other.getSize());
-            	}
+                Herd other = findNearestHerd(curr, magnetRadius);
+                if (other != null)
+                {
+                    curr.shuntCenter(other.getCenter(), other.getSize());
+                }
             }
             if (this.tickCounter % 40 == 0){
-            	Herd other = findNearestHerd(curr, 5);
-            	if (other != null){
-            		other.mergeHerd(curr);
-            	}
+                Herd other = findNearestHerd(curr, 5);
+                if (other != null){
+                    other.mergeHerd(curr);
+                }
             }
         }
 
@@ -93,19 +93,19 @@ public class HerdCollection
         while (herd_iter.hasNext())
         {
             Herd curr = (Herd)herd_iter.next();
-            if(curr.getWorldObj() == world && curr.getType() == type)	//if wrong type or world, move along.
+            if(curr.getWorldObj() == world && curr.getType() == type)    //if wrong type or world, move along.
             {
                 float currDistSqrd = curr.getCenter().getDistanceSquared(posX, posY, posZ);
-	            if (currDistSqrd < nearestDistSqrd)
-	            {
-	                int searchRadius = distance + curr.getHerdRadius();
-	
-	                if (currDistSqrd <= (float)(searchRadius * searchRadius))
-	                {
-	                    nearest = curr;
-	                    nearestDistSqrd = currDistSqrd;
-	                }
-	            }
+                if (currDistSqrd < nearestDistSqrd)
+                {
+                    int searchRadius = distance + curr.getHerdRadius();
+
+                    if (currDistSqrd <= (float)(searchRadius * searchRadius))
+                    {
+                        nearest = curr;
+                        nearestDistSqrd = currDistSqrd;
+                    }
+                }
             }
         }
 
@@ -145,15 +145,15 @@ public class HerdCollection
      * Called by EntityAIs that want to herd.  
      */
     public Herd handleNearestHerdOrMakeNew(EntityLiving prospective, Class effectiveClass, int minBreed, int maxBreed, int baseBreed, int varBreed){
-    	Herd nearest = findNearestHerd((int)prospective.posX, (int)prospective.posY, (int)prospective.posZ, 5, effectiveClass, prospective.worldObj);
-    	if (nearest == null){	//make a new one
-    		nearest = new Herd(effectiveClass,prospective.worldObj, minBreed, maxBreed, baseBreed, varBreed);
-    		nearest.addMember(prospective);
-    		nearest.updateMembers();
-    		nearest.updateHerdRadiusAndCenter();
-    		herdList.add(nearest);
-    	}
-    	
-    	return nearest;
+        Herd nearest = findNearestHerd((int)prospective.posX, (int)prospective.posY, (int)prospective.posZ, 5, effectiveClass, prospective.worldObj);
+        if (nearest == null){    //make a new one
+            nearest = new Herd(effectiveClass,prospective.worldObj, minBreed, maxBreed, baseBreed, varBreed);
+            nearest.addMember(prospective);
+            nearest.updateMembers();
+            nearest.updateHerdRadiusAndCenter();
+            herdList.add(nearest);
+        }
+
+        return nearest;
     }
 }

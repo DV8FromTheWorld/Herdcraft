@@ -12,15 +12,15 @@ import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
 
 public class ConfigGUIChicken extends ConfigGUIGeneric {
 
-	private static String category = "chicken";
-	
-	public ConfigGUIChicken(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop)
+    private static String category = "chicken";
+
+    public ConfigGUIChicken(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop)
     {
         super(owningScreen, owningEntryList, prop);
     }
     
-	@Override
-	protected GuiScreen buildChildScreen() {
-		return buildChildScreen(category);
-	}
+    @Override
+    protected GuiScreen buildChildScreen() {
+        return buildChildScreen(category);
+    }
 }
