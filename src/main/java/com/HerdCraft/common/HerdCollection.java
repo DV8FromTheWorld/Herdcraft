@@ -93,9 +93,9 @@ public class HerdCollection
         while (herd_iter.hasNext())
         {
             Herd curr = (Herd)herd_iter.next();
-            float currDistSqrd = curr.getCenter().getDistanceSquared(posX, posY, posZ);
             if(curr.getWorldObj() == world && curr.getType() == type)	//if wrong type or world, move along.
             {
+                float currDistSqrd = curr.getCenter().getDistanceSquared(posX, posY, posZ);
 	            if (currDistSqrd < nearestDistSqrd)
 	            {
 	                int searchRadius = distance + curr.getHerdRadius();

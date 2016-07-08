@@ -67,7 +67,6 @@ public class EntityAIHerdTempt extends EntityAIBase {
 
 	/**
      * Returns whether the EntityAIBase should begin execution.
-     * @param minBreed 
      */
     public boolean shouldExecute()
     {

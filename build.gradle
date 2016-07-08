@@ -36,7 +36,8 @@ repositories {
 }
 
 dependencies {
-    compile "com.scottkillen.mod:KoreSample:${project.ext.version_kore}:deobf"
+//    compile "com.scottkillen.mod:KoreSample:${project.ext.version_kore}:deobf"
+    compile files("libs/KoreSample-${project.ext.version_mc}-${project.ext.version_kore}-deobf.jar")
 }
 
 processResources
