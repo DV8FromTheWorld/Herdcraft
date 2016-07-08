@@ -59,6 +59,9 @@ public class HerdCraft
 		handlers.add(new ZombieHandler());
 		handlers.add(new ZombiePigmanHandler());
 
+		if (Loader.isModLoaded("etfuturum"))
+			handlers.add(new RabbitHandler());
+
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		refreshConfig();
