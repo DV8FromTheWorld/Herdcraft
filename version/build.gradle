@@ -2,5 +2,6 @@ rootProject.version = "$version_mc-$version_major.$version_series.$version_revis
 rootProject.ext.version_mc = version_mc
 rootProject.ext.version_forge = version_forge
 rootProject.ext.version_kore = "$version_mc-$version_kore"
+rootProject.ext.version_etfuturum = version_etfuturum
 
 apply from: "https://raw.githubusercontent.com/ScottKillen/Snippets/master/gradle/version.gradle"
